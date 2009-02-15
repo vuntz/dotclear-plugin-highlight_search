@@ -1,0 +1,7 @@
+Your search terms will then be surrounded by <span class="highlightX" ></span>, X being 0, 1, 2, 3 or 4. You might apply any CSS properties to these new classes. For example:
+
+span.highlight0 {background-color: #FFFF99;}
+span.highlight1 {background-color: #FF99FF;}
+span.highlight2 {background-color: #99FFFF;}
+span.highlight3 {background-color: #FF9999;}
+span.highlight4 {background-color: #9999FF;}
