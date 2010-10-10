@@ -142,7 +142,7 @@ class highlightSearch
 		return false;
 	}
 
-	public static function corePostSearch(&$core)
+	public static function corePostSearch($core)
 	{
 		/* we're losing the potential filters that the theme can set
 		   (ie, remove_html, cut_string, lower_case, upper_case) and we
@@ -151,12 +151,12 @@ class highlightSearch
 		$GLOBALS['_search_highlighted'] = self::highlight_all($value);
 	}
 
-	public static function coreBlogGetPosts(&$rs)
+	public static function coreBlogGetPosts($rs)
 	{
 		$rs->extend('highlightSearchPost');
 	}
 	
-	public static function coreBlogGetComments(&$rs)
+	public static function coreBlogGetComments($rs)
 	{
 		$rs->extend('highlightSearchComment');
 	}
@@ -191,13 +191,13 @@ class highlightSearch
 
 class highlightSearchPost extends rsExtPost
 {
-	public static function getContent(&$rs,$absolute_urls=false)
+	public static function getContent($rs,$absolute_urls=false)
 	{
 		$c = parent::getContent($rs,$absolute_urls);
 		return highlightSearch::highlight_all($c);
 	}
 	
-	public static function getExcerpt(&$rs,$absolute_urls=false)
+	public static function getExcerpt($rs,$absolute_urls=false)
 	{
 		$c = parent::getExcerpt($rs,$absolute_urls);
 		return highlightSearch::highlight_all($c);
@@ -206,7 +206,7 @@ class highlightSearchPost extends rsExtPost
 
 class highlightSearchComment extends rsExtComment
 {
-	public static function getContent(&$rs,$absolute_urls=false)
+	public static function getContent($rs,$absolute_urls=false)
 	{
 		$c = parent::getContent($rs,$absolute_urls);
 		return highlightSearch::highlight_all($c);
