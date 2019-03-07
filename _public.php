@@ -95,7 +95,7 @@ class highlightSearch
 			
 			for ($i = 0, $max = count($pool); $i < $max; $i++) 
 			{
-				$pool[$i] = trim(ereg_replace("[\\\"\$]+", "", $pool[$i]));
+				$pool[$i] = trim(preg_replace("?[\\\"\$]+?", "", $pool[$i]));
 				$pool[$i] = preg_replace("?^[<>@\^\!\?/\(\)\[\]\{\}|+*~#;,.:_\-]+?", "", $pool[$i]);
 				$pool[$i] = preg_replace("?[<>@\^\!\?/\(\)\[\]\{\}|+*~#;,.:_\-]+\$?", "", $pool[$i]);
 				
@@ -172,7 +172,7 @@ class highlightSearch
 
 	private static function highlight($word, $text, $number)
 	{
-		$w = $word;
+		$w = preg_quote($word, '%');
 
 		if ($word == '+') $w = '\+';
 		if ($word == '*') $w = '\*';
