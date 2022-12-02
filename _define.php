@@ -17,6 +17,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # ***** END LICENSE BLOCK *****
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 $this->registerModule(
         /* Name */                      "Highlight search",

@@ -22,6 +22,7 @@
 # This plugin is based on:
 #   rs.extension.php (from DotClear)
 #   the Highliting Search plugin for DotClear 1.x (by Bertrand Carlier)
+if (!defined('DC_RC_PATH')) return;
 
 $core->addBehavior('coreBlogGetPosts',array('highlightSearch','coreBlogGetPosts'));
 $core->addBehavior('coreBlogGetComments',array('highlightSearch','coreBlogGetComments'));
