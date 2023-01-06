@@ -24,11 +24,11 @@
 #   the Highliting Search plugin for DotClear 1.x (by Bertrand Carlier)
 if (!defined('DC_RC_PATH')) return;
 
-$core->addBehavior('coreBlogGetPosts',array('highlightSearch','coreBlogGetPosts'));
-$core->addBehavior('coreBlogGetComments',array('highlightSearch','coreBlogGetComments'));
+dcCore::app()->addBehavior('coreBlogGetPosts',array('highlightSearch','coreBlogGetPosts'));
+dcCore::app()->addBehavior('coreBlogGetComments',array('highlightSearch','coreBlogGetComments'));
 
-$core->addBehavior('corePostSearch',array('highlightSearch','corePostSearch'));
-$core->tpl->addValue('SysSearchString',array('highlightSearch','SysSearchString'));
+dcCore::app()->addBehavior('corePostSearch',array('highlightSearch','corePostSearch'));
+dcCore::app()->tpl->addValue('SysSearchString',array('highlightSearch','SysSearchString'));
 
 highlightSearch::init();
 
@@ -148,7 +148,7 @@ class highlightSearch
 		/* we're losing the potential filters that the theme can set
 		   (ie, remove_html, cut_string, lower_case, upper_case) and we
 		   assume the user always want escape_html */
-		$value = isset($GLOBALS['_search']) ? html::escapeHTML($GLOBALS['_search']) : '';
+		$value = isset(dcCore::app()->public->search) ? html::escapeHTML(dcCore::app()->public->search) : '';
 		$GLOBALS['_search_highlighted'] = self::highlight_all($value);
 	}
 
@@ -164,11 +164,12 @@ class highlightSearch
 
         public function SysSearchString($attr)
         {
-		$s = isset($attr['string']) ? $attr['string'] : '%1$s';
+                $string = $attr['string'] ?? '%1$s';
 
 		/* note: we don't put filters here: we'll have additional html
 		   for the highlight, so filters will mess this up */
-		return '<?php if (isset($_search)) { echo sprintf(__(\''.$s.'\'),$_search_highlighted,$_search_count);} ?>';
+                return '<?php if (isset(dcCore::app()->public->search)) { echo sprintf(__(\'' . $string . '\'),' .
+		    '$_search_highlighted,dcCore::app()->public->search_count);} ?>';
         }
 
 	private static function highlight($word, $text, $number)
@@ -192,13 +193,13 @@ class highlightSearch
 
 class highlightSearchPost extends rsExtPost
 {
-	public static function getContent($rs,$absolute_urls=false)
+	public static function getContent(dcRecord $rs, bool $absolute_urls = false): string
 	{
 		$c = parent::getContent($rs,$absolute_urls);
 		return highlightSearch::highlight_all($c);
 	}
 	
-	public static function getExcerpt($rs,$absolute_urls=false)
+	public static function getExcerpt(dcRecord $rs, bool $absolute_urls = false): string
 	{
 		$c = parent::getExcerpt($rs,$absolute_urls);
 		return highlightSearch::highlight_all($c);
@@ -207,7 +208,7 @@ class highlightSearchPost extends rsExtPost
 
 class highlightSearchComment extends rsExtComment
 {
-	public static function getContent($rs,$absolute_urls=false)
+	public static function getContent(dcRecord $rs, bool $absolute_urls = false): string
 	{
 		$c = parent::getContent($rs,$absolute_urls);
 		return highlightSearch::highlight_all($c);
