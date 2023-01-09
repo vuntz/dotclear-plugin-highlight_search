@@ -145,10 +145,7 @@ class highlightSearch
 
 	public static function corePostSearch($core)
 	{
-		/* we're losing the potential filters that the theme can set
-		   (ie, remove_html, cut_string, lower_case, upper_case) and we
-		   assume the user always want escape_html */
-		$value = isset(dcCore::app()->public->search) ? html::escapeHTML(dcCore::app()->public->search) : '';
+		$value = isset(dcCore::app()->public->search) ? dcCore::app()->public->search : '';
 		$GLOBALS['_search_highlighted'] = self::highlight_all($value);
 	}
 
